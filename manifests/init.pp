@@ -23,7 +23,7 @@ class jdk {
 
     if($operatingsystem =~ /RedHat|CentOS/) {
       $package = 'jdk-6u38-linux-x64-rpm.bin'
-      $cookie = '"Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2Ftechnetwork%2Fjava%2Fjavase%2Fdownloa  ds%2Fjdk-7u3-download-1501626.html;"'
+      $cookie = '"Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com"'
       $url = "http://download.oracle.com/otn-pub/java/jdk/6u38-b05/${package}"
 
       # http://getpocket.com/a/read/153528263
