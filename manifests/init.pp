@@ -13,10 +13,13 @@ class jdk {
                   Exec['skipping license approval']]
     }
 
+    package{'debconf-utils':
+      ensure  => present
+    }
     exec{'skipping license approval':
       command => "/bin/echo  'oracle-java6-installer shared/accepted-oracle-license-v1-1 boolean true' | /usr/bin/debconf-set-selections",
       user    => 'root',
-      require => Apt::Ppa['ppa:webupd8team/java'],
+      require => [Apt::Ppa['ppa:webupd8team/java'], Package['debconf-utils']]
     }
 
   }
