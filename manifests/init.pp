@@ -31,7 +31,7 @@ class jdk {
 
       # http://getpocket.com/a/read/153528263
       exec{'download jdk':
-        command  => "wget -O /tmp/${package} --no-cookies --header ${cookie} ${url}",
+        command  => "wget -O /tmp/${package} --no-cookies --no-check-certificate --header ${cookie} ${url}",
         user     => 'root',
         path     => '/usr/bin/'
       }
