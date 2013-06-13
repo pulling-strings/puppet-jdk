@@ -2,7 +2,7 @@
 # Usage:
 # include jdk
 class jdk {
-  if($operatingsystem =~ /Ubuntu|Debian/){
+  if($::operatingsystem =~ /Ubuntu|Debian/){
     include apt
 
     apt::ppa { 'ppa:webupd8team/java': }
@@ -24,7 +24,7 @@ class jdk {
 
   }
 
-    if($operatingsystem =~ /RedHat|CentOS/) {
+    if($::operatingsystem =~ /RedHat|CentOS/) {
       $package = 'jdk-6u38-linux-x64-rpm.bin'
       $cookie = '"Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com"'
       $url = "http://download.oracle.com/otn-pub/java/jdk/6u38-b05/${package}"
@@ -44,9 +44,11 @@ class jdk {
 
       exec{'install jdk':
         command => "yes \"\" | /tmp/${package}",
+        cwd     => '/tmp',
         user    => 'root',
         path    => '/usr/bin/',
         unless  => '/usr/bin/test -d /usr/java',
+        timeout => 600,
         require => [Exec['download jdk'], Exec['chmod jdk package']]
       }
 
