@@ -1,13 +1,18 @@
 # This puppet module sets up java jdk
 # Usage:
 # include jdk
-class jdk {
+class jdk($version='6') {
   if($::operatingsystem =~ /Ubuntu|Debian/){
     include apt
 
     apt::ppa { 'ppa:webupd8team/java': }
 
-    package{'oracle-java6-installer':
+    $installer= $version ? {
+      '7'      => 'oracle-java7-installer',
+      default  => 'oracle-java6-installer'
+    }
+
+    package{$installer:
       ensure  => present,
       require => [Apt::Ppa['ppa:webupd8team/java'],
                   Exec['skipping license approval']]
@@ -17,7 +22,7 @@ class jdk {
       ensure  => present
     }
     exec{'skipping license approval':
-      command => "/bin/echo  'oracle-java6-installer shared/accepted-oracle-license-v1-1 boolean true' | /usr/bin/debconf-set-selections",
+      command => "/bin/echo  '$installer shared/accepted-oracle-license-v1-1 boolean true' | /usr/bin/debconf-set-selections",
       user    => 'root',
       require => [Apt::Ppa['ppa:webupd8team/java'], Package['debconf-utils']]
     }
