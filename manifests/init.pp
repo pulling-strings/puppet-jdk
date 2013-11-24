@@ -1,7 +1,18 @@
 # This puppet module sets up java jdk
 # Usage:
+#
 # include jdk
-class jdk($version='6') {
+#
+# In order to use jdk 7 (ubuntu only)
+# class {'jdk':
+#   version => 7
+# }
+#
+# In order to use local rpm url:
+# class{'jdk'
+#  rpm_url => 'http://..
+# }
+class jdk($version='6', $rpm_url='') {
   if($::operatingsystem =~ /Ubuntu|Debian/){
     include apt
 
@@ -32,7 +43,12 @@ class jdk($version='6') {
     if($::operatingsystem =~ /RedHat|CentOS/) {
       $package = 'jdk-6u38-linux-x64-rpm.bin'
       $cookie = '"Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com"'
-      $url = "http://download.oracle.com/otn-pub/java/jdk/6u38-b05/${package}"
+
+      if($rpm_url != '') {
+        $url = "${rpm_url}/${package}"
+      } else {
+        $url = "http://download.oracle.com/otn-pub/java/jdk/6u38-b05/${package}"
+      }
 
       # http://getpocket.com/a/read/153528263
       exec{'download jdk':
