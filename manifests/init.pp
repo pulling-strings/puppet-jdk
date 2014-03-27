@@ -41,43 +41,54 @@ class jdk($version='6', $rpm_url='') {
   }
 
     if($::operatingsystem =~ /RedHat|CentOS/) {
-      $package = 'jdk-6u38-linux-x64-rpm.bin'
-      $cookie = '"Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com"'
+      $package = 'jdk-7u51-linux-x64.rpm'
+      $cookie = '"Cookie: oraclelicense=accept-securebackup-cookie"'
 
       if($rpm_url != '') {
         $url = "${rpm_url}/${package}"
       } else {
-        $url = "http://download.oracle.com/otn-pub/java/jdk/6u38-b05/${package}"
+        $url = "http://download.oracle.com/otn-pub/java/jdk/7u51-b13/${package}"
       }
 
-      # http://getpocket.com/a/read/153528263
       exec{'download jdk':
-        command  => "wget -O /tmp/${package} --no-cookies --no-check-certificate --header ${cookie} ${url}",
-        user     => 'root',
-        path     => '/usr/bin/'
+          command  => "wget -O /tmp/${package} --no-cookies --no-check-certificate --header ${cookie} ${url}",
+          user     => 'root',
+          path     => '/usr/bin/',
+          unless  => "/usr/bin/test -f /tmp/${package}",
       }
 
-      exec{'chmod jdk package':
-        command => "chmod +x /tmp/${package}",
-        user    => 'root',
-        path    => '/bin'
-      }
+      if($version == '6') {
+        exec{'chmod jdk package':
+          command => "chmod +x /tmp/${package}",
+          user    => 'root',
+          path    => '/bin',
+          require => Exec['download jdk']
+        }
 
-      exec{'install jdk':
-        command => "yes \"\" | /tmp/${package}",
-        cwd     => '/tmp',
-        user    => 'root',
-        path    => '/usr/bin/',
-        unless  => '/usr/bin/test -d /usr/java',
-        timeout => 600,
-        require => [Exec['download jdk'], Exec['chmod jdk package']]
-      }
+        exec{'install jdk':
+          command => "yes \"\" | /tmp/${package}",
+          cwd     => '/tmp',
+          user    => 'root',
+          path    => '/usr/bin/',
+          unless  => '/usr/bin/test -d /usr/java',
+          timeout => 600,
+          require => [Exec['download jdk'], Exec['chmod jdk package']]
+        }
 
-      exec{'update alternative':
-        command => 'alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_38/bin/java 2',
-        user    => 'root',
-        path    => '/usr/sbin/',
-        unless  => '/usr/bin/which java'
+        exec{'update alternative':
+          command => 'alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_38/bin/java 2',
+          user    => 'root',
+          path    => '/usr/sbin/',
+          unless  => '/usr/bin/which java'
+        }
+      } else {
+        exec{'install jdk':
+          command => "/bin/rpm -ivh /tmp/${package}",
+          cwd     => '/tmp',
+          user    => 'root',
+          unless  => '/usr/bin/test -d /usr/java',
+          require => Exec['download jdk']
+        }
       }
     }
 }
