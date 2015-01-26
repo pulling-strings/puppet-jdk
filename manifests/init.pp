@@ -19,6 +19,7 @@ class jdk($version='6', $rpm_url='') {
     apt::ppa { 'ppa:webupd8team/java': }
 
     $installer= $version ? {
+      '8'      => 'oracle-java8-installer',
       '7'      => 'oracle-java7-installer',
       default  => 'oracle-java6-installer'
     }
