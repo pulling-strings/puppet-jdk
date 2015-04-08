@@ -14,7 +14,6 @@
 # }
 class jdk($version='6', $rpm_url='') {
   if($::operatingsystem =~ /Ubuntu|Debian/){
-    include apt
 
     apt::ppa { 'ppa:webupd8team/java': }
 
