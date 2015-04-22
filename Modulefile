@@ -8,4 +8,4 @@ description 'Install oracle jdk 6 on both Centos and Ubuntu'
 project_page 'https://github.com/narkisr/puppet-jdk'
 
 dependency 'puppetlabs/stdlib', '>= 2.0.0'
-dependency 'puppetlabs/apt', '>= 0.0.3'
+dependency 'puppetlabs/apt', '>= 2.0.0'
