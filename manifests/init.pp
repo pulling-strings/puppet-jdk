@@ -20,7 +20,7 @@ class jdk($version='6', $rpm_url='') {
     $installer= $version ? {
       '8'      => 'oracle-java8-installer',
       '7'      => 'oracle-java7-installer',
-      default  => 'oracle-java6-installer'
+      '6'      => 'oracle-java6-installer'
     }
 
     package{$installer:
