@@ -7,7 +7,7 @@ class jdk::jce(
   $dest = 'UnlimitedJCEPolicy'
 ) {
 
-  $cmd = "wget -O /tmp/${package} --no-cookies --no-check-certificate --header ${cookie} ${url}"
+  $cmd = "wget -O /tmp/${package} --no-cookies --no-check-certificate --header 'Cookie: ${cookie}' ${url}"
 
   ensure_packages('unzip')
 
