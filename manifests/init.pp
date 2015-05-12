@@ -12,7 +12,11 @@
 # class{'jdk'
 #  rpm_url => 'http://..
 # }
-class jdk($version='6', $rpm_url='') {
+class jdk(
+  $version='6',
+  $rpm_url='',
+  $enable_jce = false
+) {
   if($::operatingsystem =~ /Ubuntu|Debian/){
 
     apt::ppa { 'ppa:webupd8team/java': }
@@ -90,5 +94,9 @@ class jdk($version='6', $rpm_url='') {
           require => Exec['download jdk']
         }
       }
+    }
+
+    if $enable_jce {
+      include jdk::jce
     }
 }
