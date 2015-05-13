@@ -7,12 +7,18 @@ class jdk::jce(
   $dest = 'UnlimitedJCEPolicy'
 ) {
 
+  $preqs = $::operatingsystem ? {
+    'Ubuntu'          => Package[$jdk::install::ubuntu::installer],
+    /(Redhat|Centos)/ => Exec['install jdk']
+  }
+
   $cmd = "wget -O /tmp/${package} --no-cookies --no-check-certificate --header 'Cookie: ${cookie}' ${url}"
 
   ensure_packages('unzip')
 
   file{"${home}/security":
-    ensure => directory,
+    ensure  => directory,
+    require => $preqs
   } ->
 
   exec{'download jce':

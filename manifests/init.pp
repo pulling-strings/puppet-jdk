@@ -19,7 +19,7 @@ class jdk(
 ) {
 
   if($::operatingsystem =~ /Ubuntu|Debian/){
-    include ::jdk::install::debian
+    include ::jdk::install::ubuntu
   }
 
   if($::operatingsystem =~ /RedHat|CentOS/) {
@@ -28,6 +28,5 @@ class jdk(
 
   if $enable_jce {
     include jdk::jce
-    Class['jdk'] -> Class['jdk::jce']
   }
 }

@@ -1,5 +1,5 @@
 # Debian/Ubuntu setup
-class jdk::install::debian {
+class jdk::install::ubuntu {
 
   apt::ppa { 'ppa:webupd8team/java': }
 
