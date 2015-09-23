@@ -44,6 +44,14 @@ class jdk::install::redhat {
     
     jdk::install::alternative {'javac':
       target => 'jdk1.8.0_60'
+    } ->
+
+    jdk::install::alternative {'java':
+      target => 'jdk1.8.0_60'
+    }
+
+    jdk::install::alternative {'jar':
+      target => 'jdk1.8.0_60'
     }
   }
 

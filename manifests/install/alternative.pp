@@ -6,11 +6,11 @@ define jdk::install::alternative(
     user   => root,
     path   => ['/usr/bin','/bin','/usr/sbin'],
     unless => "test -f /usr/bin/${name} && /usr/bin/${name} -version",
-  } ->
+  } ~>
 
   exec{"alternatives --set ${name} /opt/${target}/bin/${name}":
-    user   => root,
-    path   => ['/usr/bin','/bin','/usr/sbin'],
-    unless => "/usr/bin/${name} -version",
+    user        => root,
+    path        => ['/usr/bin','/bin','/usr/sbin'],
+    refreshonly => true
   }
 }
