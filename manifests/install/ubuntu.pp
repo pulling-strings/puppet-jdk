@@ -1,7 +1,9 @@
 # Debian/Ubuntu setup
 class jdk::install::ubuntu {
 
-  apt::ppa { 'ppa:webupd8team/java': }
+  apt::ppa { 'ppa:webupd8team/java':
+    package_manage => true
+  }
 
   $installer= $::jdk::version ? {
     '8'      => 'oracle-java8-installer',
