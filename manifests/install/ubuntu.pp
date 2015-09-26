@@ -11,6 +11,7 @@ class jdk::install::ubuntu {
     '6'      => 'oracle-java6-installer'
   }
 
+  Class['apt::update'] ->
   package{$installer:
     ensure  => present,
     require => [Apt::Ppa['ppa:webupd8team/java'],
