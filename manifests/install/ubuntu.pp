@@ -2,7 +2,6 @@
 class jdk::install::ubuntu {
 
   apt::ppa { 'ppa:webupd8team/java':
-    package_manage => true
   }
 
   $installer= $::jdk::version ? {
