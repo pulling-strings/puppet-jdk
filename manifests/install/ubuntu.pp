@@ -17,9 +17,7 @@ class jdk::install::ubuntu {
     Exec['skipping license approval']]
   }
 
-  package{'debconf-utils':
-    ensure  => present
-  }
+  ensure_packages(['debconf-utils'],{})
 
   exec{'skipping license approval':
     command => "/bin/echo  '${installer} shared/accepted-oracle-license-v1-1 boolean true' | /usr/bin/debconf-set-selections",
