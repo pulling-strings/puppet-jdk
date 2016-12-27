@@ -13,7 +13,7 @@
 #  rpm_url => 'http://..
 # }
 class jdk(
-  $version='6',
+  $version='7',
   $rpm_url='',
   $enable_jce = false
 ) {

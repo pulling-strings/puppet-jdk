@@ -6,6 +6,9 @@ class jdk::jce(
   $home = '/usr/lib/jvm/java-7-oracle/lib/',
   $dest = 'UnlimitedJCEPolicy'
 ) {
+  if(::jdk::version != '7'){
+    fail('this class only supports jdk 7')
+  }
 
   $preqs = $::operatingsystem ? {
     'Ubuntu'          => Package[$jdk::install::ubuntu::installer],
