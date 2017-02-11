@@ -2,12 +2,12 @@
 class jdk::jce(
   $cookie = 'oraclelicense=accept-securebackup-cookie;gpw_e24=http://edelivery.oracle.com',
   $package = 'jce.zip',
-  $url = 'http://download.oracle.com/otn-pub/java/jce/7/UnlimitedJCEPolicyJDK7.zip',
-  $home = '/usr/lib/jvm/java-7-oracle/lib/',
-  $dest = 'UnlimitedJCEPolicy'
+  $url = 'http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip',
+  $home = '/usr/lib/jvm/java-8-oracle/lib/',
+  $dest = 'UnlimitedJCEPolicyJDK8'
 ) {
-  if(::jdk::version != '7'){
-    fail('this class only supports jdk 7')
+  if($::jdk::version != '8'){
+    fail('this class only supports jdk 8')
   }
 
   $preqs = $::operatingsystem ? {
