@@ -1,4 +1,4 @@
-# Adding jce support
+# JCE install 
 class jdk::jce(
   $cookie = 'oraclelicense=accept-securebackup-cookie;gpw_e24=http://edelivery.oracle.com',
   $package = 'jce.zip',
@@ -15,35 +15,42 @@ class jdk::jce(
     /(Redhat|Centos)/ => Exec['install jdk']
   }
 
-  $cmd = "wget -O /tmp/${package} --no-cookies --no-check-certificate --header 'Cookie: ${cookie}' ${url}"
+  if($::operatingsystem == 'Ubuntu'){
+    package{'oracle-java8-unlimited-jce-policy':
+      ensure  => present,
+      require => Package[$jdk::install::ubuntu::installer]
+    }
+  } else {
+    $cmd = "wget -O /tmp/${package} --no-cookies --no-check-certificate --header 'Cookie: ${cookie}' ${url}"
 
-  ensure_packages('unzip')
+    ensure_packages('unzip')
 
-  file{"${home}/security":
-    ensure  => directory,
-    require => $preqs
-  } ->
+    file{"${home}/security":
+      ensure  => directory,
+      require => $preqs
+    } ->
 
-  exec{'download jce':
-    command => $cmd,
-    user    => 'root',
-    path    => '/usr/bin/',
-    unless  => "/usr/bin/test -f /tmp/${package}",
-  } ->
+    exec{'download jce':
+      command => $cmd,
+      user    => 'root',
+      path    => '/usr/bin/',
+      unless  => "/usr/bin/test -f /tmp/${package}",
+    } ->
 
-  exec{'extract jce':
-    command => "unzip /tmp/${package} -d /tmp",
-    user    => 'root',
-    path    => '/usr/bin',
-    require => Package['unzip'],
-    unless  => "/usr/bin/test -d /tmp/${dest}",
-  } ->
+    exec{'extract jce':
+      command => "unzip /tmp/${package} -d /tmp",
+      user    => 'root',
+      path    => '/usr/bin',
+      require => Package['unzip'],
+      unless  => "/usr/bin/test -d /tmp/${dest}",
+    } ->
 
-  exec{'move jce':
-    command => "mv /tmp/${dest}/* ${home}/security",
-    user    => 'root',
-    path    => ['/usr/bin','/bin',],
-    unless  => "/usr/bin/test -f ${home}/security/US_export_policy.jar",
+    exec{'move jce':
+      command => "mv /tmp/${dest}/* ${home}/security",
+      user    => 'root',
+      path    => ['/usr/bin','/bin',],
+      unless  => "/usr/bin/test -f ${home}/security/US_export_policy.jar",
+    }
   }
 
 }
