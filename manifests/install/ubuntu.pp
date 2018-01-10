@@ -5,9 +5,9 @@ class jdk::install::ubuntu {
   }
 
   $installer= $::jdk::version ? {
-    '8'      => 'oracle-java8-installer',
-    '7'      => 'oracle-java7-installer',
-    '6'      => 'oracle-java6-installer'
+    8      => 'oracle-java8-installer',
+    7      => 'oracle-java7-installer',
+    6      => 'oracle-java6-installer'
   }
 
   Class['apt::update'] ->
