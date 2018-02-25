@@ -6,7 +6,7 @@ class jdk::jce(
   $home = '/usr/lib/jvm/java-8-oracle/lib/',
   $dest = 'UnlimitedJCEPolicyJDK8'
 ) {
-  if($::jdk::version != '8'){
+  if($::jdk::version != 8){
     fail('this class only supports jdk 8')
   }
 
@@ -28,24 +28,24 @@ class jdk::jce(
     file{"${home}/security":
       ensure  => directory,
       require => $preqs
-    } ->
+    }
 
-    exec{'download jce':
+    -> exec{'download jce':
       command => $cmd,
       user    => 'root',
       path    => '/usr/bin/',
       unless  => "/usr/bin/test -f /tmp/${package}",
-    } ->
+    }
 
-    exec{'extract jce':
+    -> exec{'extract jce':
       command => "unzip /tmp/${package} -d /tmp",
       user    => 'root',
       path    => '/usr/bin',
       require => Package['unzip'],
       unless  => "/usr/bin/test -d /tmp/${dest}",
-    } ->
+    }
 
-    exec{'move jce':
+    -> exec{'move jce':
       command => "mv /tmp/${dest}/* ${home}/security",
       user    => 'root',
       path    => ['/usr/bin','/bin',],
